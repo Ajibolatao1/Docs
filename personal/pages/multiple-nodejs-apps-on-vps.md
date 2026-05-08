@@ -1,7 +1,5 @@
 # VPS - Deploying Multiple Node.js Apps on a VPS with Nginx, PM2, and SSL
 
-* * *
-
 ## 1\. Connect to Your VPS via SSH
 
 ```bash
@@ -10,7 +8,7 @@ ssh root@your_server_ip
 Ajibolatao1.
 ```
 
-* * *
+---
 
 ## 2\. Update Your VPS
 
@@ -36,7 +34,7 @@ su - newuser
 sudo whoami
 ```
 
-* * *
+---
 
 ## 3\. Install Node.js, NPM, and Git
 
@@ -70,7 +68,7 @@ npm -v
 git --version
 ```
 
-* * *
+---
 
 ## 4\. Install PM2 (Process Manager)
 
@@ -84,7 +82,7 @@ sudo npm install -g pm2
 pm2 -v
 ```
 
-* * *
+---
 
 ## 5\. Install and Configure Nginx
 
@@ -120,7 +118,7 @@ sudo ufw allow 'Nginx HTTP'
 sudo ufw allow 'Nginx Full'
 ```
 
-* * *
+---
 
 ```bash
 sudo ufw allow 8080
@@ -133,7 +131,7 @@ ssh-keygen -t ed25519 -C "your-email@example.com"
 ```
 
 ```bash
-cat ~/.ssh/id_ed25519.pub  
+cat ~/.ssh/id_ed25519.pub
 ```
 
 - (Add the key at GitHub → Settings → SSH Keys) ([here](https://github.com/settings/keys))
@@ -142,7 +140,7 @@ cat ~/.ssh/id_ed25519.pub
 git clone git@github.com:your-username/your-private-repo.git
 ```
 
-* * *
+---
 
 ## 7\. Clone Your App
 
@@ -164,7 +162,7 @@ cd /path/to/your/app
 npm install
 ```
 
-* * *
+---
 
 ## 8\. Run Apps with PM2
 
@@ -212,7 +210,7 @@ pm2 restart app1
 pm2 save
 ```
 
-* * *
+---
 
 ## 9\. Configure Nginx Reverse Proxy
 
@@ -223,13 +221,13 @@ sudo nano /etc/nginx/sites-available/default
 ```
 
 ```bash
-server {  
-    listen 80 default_server;  
-        server_name _;  
-        location / {  
-        return 444;  
-        }  
-}  
+server {
+    listen 80 default_server;
+        server_name _;
+        location / {
+        return 444;
+        }
+}
 ```
 
 ### App 1 Configuration:
@@ -242,8 +240,8 @@ sudo nano /etc/nginx/sites-available/app1
 
 ```bash
 # For a node app
-server {  
-    listen 80;  
+server {
+    listen 80;
     server_name app1.domain.com; # Replace with api.revampcode.com if using subdomain
     location / {
         proxy_pass http://localhost:8080;
@@ -282,7 +280,7 @@ sudo ln -s /etc/nginx/sites-available/app1 /etc/nginx/sites-enabled/
 
 (Repeat for each app.)
 
-* * *
+---
 
 ## 10\. Reload Nginx
 
@@ -294,16 +292,16 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-* * *
+---
 
 ## 11\. Update DNS A Records
 
-| Type | Name | Value |
-| --- | --- | --- |
+| Type     | Name | Value          |
+| -------- | ---- | -------------- |
 | A Record | app1 | VPS_IP_ADDRESS |
 | A Record | app2 | VPS_IP_ADDRESS |
 
-* * *
+---
 
 ## 12\. Setup SSL with Let’s Encrypt
 
@@ -322,10 +320,10 @@ sudo certbot --nginx -d app1.domain.com -d app2.domain.com
 **Auto-Renew:**
 
 ```bash
-sudo certbot renew --dry-run 
+sudo certbot renew --dry-run
 ```
 
-* * *
+---
 
 ## 13\. Enable PM2 on Reboot
 
@@ -337,7 +335,7 @@ pm2 startup
 pm2 save
 ```
 
-* * *
+---
 
 ## 14\. Monitoring & Maintenance
 

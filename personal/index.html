@@ -4,7 +4,7 @@
 <head>
    <meta charset="UTF-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>My Docs</title>
+   <title>Personal</title>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
    <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap"
@@ -182,6 +182,27 @@
          text-transform: uppercase;
          color: var(--text-muted);
       }
+
+      .home-link {
+         padding: 9px 14px;
+         margin: 2px 8px;
+         border-radius: var(--radius);
+         text-decoration: none;
+         color: var(--text);
+         font-family: var(--mono);
+         font-size: .82rem;
+         cursor: pointer;
+         transition: background var(--transition), color var(--transition), padding-left var(--transition);
+         border: 1px solid transparent;
+         position: relative;
+      }
+
+      .home-link:hover {
+         background: var(--surface2);
+         color: var(--text-strong);
+         padding-left: 20px;
+      }
+
 
       .nav-link {
          display: flex;
@@ -546,20 +567,16 @@
    <div class="layout">
       <!-- Sidebar -->
       <aside class="sidebar" id="sidebar">
-         <div class="sidebar-logo" id="home-link" style="cursor:pointer">
+         <div class="sidebar-logo">
             <span class="dot"></span>
-            My Docs
+            <a href="/index.html" class="home-link">
+               Home
+            </a>
          </div>
 
-         <div class="sidebar-section">Navigation</div>
+         <div class="sidebar-section">Pages</div>
 
          <nav id="nav">
-            <a class="nav-link" data-src="home" href="#">
-               <span class="icon">⌂</span> Home
-            </a>
-
-            <div class="sidebar-section">Pages</div>
-
             <a class="nav-link" data-src="pages/essential-cli-commands.md" href="#">
                <span class="icon">◈</span> Essential CLI Commands
             </a>
@@ -576,11 +593,6 @@
       <!-- Main -->
       <main class="main">
          <div class="content-wrap">
-            <div class="top-bar" id="top-bar" style="display:none;margin-bottom:16px">
-               <button id="back-btn" style="background:none;border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:var(--radius);cursor:pointer;font-family:var(--mono);font-size:.78rem;transition:background var(--transition)">
-                  ← Back
-               </button>
-            </div>
             <div class="loader" id="loader"></div>
             <div id="md-output">
                <div class="placeholder">
@@ -593,536 +605,12 @@
    </div>
 
    <script>
-      // ── Inline markdown pages (works with file:// protocol) ──
-      const pages = {
-         "home": `# Welcome to My Docs
-
-A collection of personal reference notes and guides.
-
----
-
-## 📋 Available Pages
-
-| Page | Description |
-|------|-------------|
-| [**Essential CLI Commands**](#pages/essential-cli-commands.md) | A structured guide to essential command-line interface commands |
-| [**Multiple Node.js Apps on VPS**](#pages/multiple-nodejs-apps-on-vps.md) | Deploying multiple Node.js apps with Nginx, PM2, and SSL |
-
----
-
-Select a page from the sidebar to get started.`,
-         "pages/essential-cli-commands.md": `# Essential CLI Commands Reference
-
-**Command-Line Interface (CLI)** commands are fundamental for interacting with operating systems efficiently. Below is a structured guide to essential CLI commands, formatted for Joplin.
-
-* * *
-
-## Navigation Commands
-
-These commands help you move through the file system and check your location:
-
-- \`cd\` - **Change directory** (e.g., \`cd Documents\` moves to the "Documents" folder)
-    - \`cd /\` - Navigate to the **system's root directory** (uses an absolute path)
-    - \`cd ~\` - Go to the **current user's home directory**
-    - \`cd -\` - Switch to the **previous directory** you were working in
-- \`pwd\` - **Print Working Directory** (displays your exact location in the file system)
-
-* * *
-
-## File & Directory Management
-
-Create, organize, and delete files and folders with these commands:
-
-- \`touch [filename]\` - **Create a new empty file** (e.g., \`touch notes.md\` creates a Markdown file)
-- \`mkdir [directory]\` - **Make a new directory** (e.g., \`mkdir Projects\` creates a "Projects" folder)
-    - \`mkdir -p [path]\` - Create **nested directories** (e.g., \`mkdir -p Music/Jazz\` creates both "Music" and "Jazz")
-- \`ls\` - **List contents** of the current directory
-    - \`ls -l\` - Show a **detailed list** (includes permissions, file size, and modification date)
-    - \`ls -a\` - List **hidden files/folders** (those starting with a \`.\`, like \`.bashrc\`)
-    - \`ls [path]\` - List contents of a specific directory (e.g., \`ls Downloads\`)
-- \`rm [item]\` - **Remove a file or empty directory**
-    - \`rm --rf [item]\` - **Force remove** non-empty directories and all contents (**use with extreme caution!**)
-- \`cp [source] [destination]\` - **Copy files/directories** (e.g., \`cp report.pdf ~/Backups\`)
-    - \`cp -r [source] [destination]\` - Copy directories **recursively** (including all contents)
-- \`mv [source] [destination]\` - **Move or rename** files/directories (e.g., \`mv oldname.txt newname.txt\` renames a file)
-
-* * *
-
-## File Content Operations
-
-View, create, or edit file contents with these tools:
-
-- \`cat [filename]\` - **Concatenate and display** file contents (e.g., \`cat todo.txt\` shows your to-do list)
-    - \`cat > [filename]\` - **Write text to a file** (overwrites existing content; press \`ctrl + d\` to save)
-    - \`cat >> [filename]\` - **Append text to a file** (preserves existing content)
-- \`echo "[text]"\` - **Print text** to the terminal
-    - \`echo "[text]" > [filename]\` - Write text directly to a file (overwrites)
-    - \`echo "[text]" >> [filename]\` - Append text to a file (adds to the end)
-- \`nano [filename]\` / \`vim [filename]\` - Open a **text editor** to modify files (\`nano\` is beginner-friendly)
-
-* * *
-
-## Output Redirection
-
-Control where command output is sent (instead of just the terminal):
-
-- \`>\` - **Redirect output to a file** (overwrites existing content)
-    **Example:** \`ls -l > files_list.txt\` saves the detailed directory list to "files_list.txt"
-- \`>>\` - **Append output to a file** (adds to existing content instead of overwriting)
-    **Example:** \`date >> activity_log.txt\` adds the current date/time to "activity_log.txt"
-
-* * *
-
-## Terminal Controls
-
-Manage your terminal session with these shortcuts:
-
-- \`clear\` or \`ctrl + l\` - **Clear the terminal screen**
-- \`ctrl + c\` - **Cancel the currently running command**
-- \`ctrl + d\` - **Exit the terminal** or current mode (e.g., when editing with \`cat >\`)
-- \`exit\` - **Close the terminal session** entirely
-
-* * *
-
-## System Information
-
-Get details about your system, user, and commands:
-
-- \`date\` - Show the **current date and time**
-- \`whoami\` - Display the **username** of the currently logged-in user
-- \`[command] --help\` - Show all **options/flags** for a command (e.g., \`ls --help\`)
-- \`man [command]\` - Open the **manual page** for a command (more detailed than \`--help\`; press \`q\` to exit)
-- \`df -h\` - Show **disk space usage** (in human-readable format, e.g., GB)
-- \`free -h\` - Display **system memory (RAM) usage**
-
-* * *
-
-## Search & Filter
-
-Find files or text efficiently:
-
-- \`find [path] -iname "[pattern]"\` - **Search for files/directories by name**
-    **Example:** \`find ~/Books -iname "*.pdf"\` finds all PDF files in your "Books" folder
-- \`grep "[text]" [filename]\` - **Search for text within a file**
-    **Example:** \`grep "urgent" tasks.txt\` finds all lines with "urgent" in "tasks.txt"
-- \`[command] | grep "[text]"\` - **Filter command output** to show only lines with specific text
-    **Example:** \`ls --help | grep "hidden"\` shows help info related to hidden files
-
-* * *
-
-## Advanced Operations
-
-For complex tasks, use these commands:
-
-- \`touch file{001..100}.txt\` - **Create multiple files** (e.g., 100 files named "file001.txt" to "file100.txt")
-- \`chmod [permissions] [file]\` - **Change file permissions** (e.g., \`chmod 755 script.sh\` makes a script executable)
-- \`sudo [command]\` - Run a command with **administrative (root) privileges** (e.g., \`sudo apt update\` on Linux)
-- \`tar -czf [archive].tar.gz [files]\` - **Create a compressed archive** (e.g., \`tar -czf photos.tar.gz ~/Pictures\`)
-- \`tar -xzf [archive].tar.gz\` - **Extract a compressed archive**`,
-         "pages/multiple-nodejs-apps-on-vps.md": `# VPS - Deploying Multiple Node.js Apps on a VPS with Nginx, PM2, and SSL
-
-* * *
-
-## 1\. Connect to Your VPS via SSH
-
-\`\`\`bash
-ssh root@your_server_ip
-
-Ajibolatao1.
-\`\`\`
-
-* * *
-
-## 2\. Update Your VPS
-
-\`\`\`bash
-sudo apt update && sudo apt upgrade -y
-\`\`\`
-
-### Create a New User (recommended instead of using root):
-
-\`\`\`bash
-sudo adduser newuser
-\`\`\`
-
-\`\`\`bash
-sudo usermod -aG sudo newuser
-\`\`\`
-
-\`\`\`bash
-su - newuser
-\`\`\`
-
-\`\`\`bash
-sudo whoami
-\`\`\`
-
-* * *
-
-## 3\. Install Node.js, NPM, and Git
-
-\`\`\`bash
-curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
-\`\`\`
-
-\`\`\`bash
-sudo -E bash nodesource_setup.sh
-\`\`\`
-
-\`\`\`bash
-sudo apt install -y nodejs
-\`\`\`
-
-\`\`\`bash
-sudo apt install git -y
-\`\`\`
-
-**Verify Installation:**
-
-\`\`\`bash
-node -v
-\`\`\`
-
-\`\`\`bash
-npm -v
-\`\`\`
-
-\`\`\`bash
-git --version
-\`\`\`
-
-* * *
-
-## 4\. Install PM2 (Process Manager)
-
-\`\`\`bash
-sudo npm install -g pm2
-\`\`\`
-
-**Verify Installation:**
-
-\`\`\`bash
-pm2 -v
-\`\`\`
-
-* * *
-
-## 5\. Install and Configure Nginx
-
-\`\`\`bash
-sudo apt install nginx
-\`\`\`
-
-**Start & Enable Nginx:**
-
-\`\`\`bash
-sudo systemctl start nginx
-\`\`\`
-
-\`\`\`bash
-sudo systemctl enable nginx
-\`\`\`
-
-\`\`\`bash
-sudo systemctl status nginx
-\`\`\`
-
-**Allow Access to Required Ports:**
-
-\`\`\`bash
-sudo ufw allow OpenSSH
-\`\`\`
-
-\`\`\`bash
-sudo ufw allow 'Nginx HTTP'
-\`\`\`
-
-\`\`\`bash
-sudo ufw allow 'Nginx Full'
-\`\`\`
-
-* * *
-
-\`\`\`bash
-sudo ufw allow 8080
-\`\`\`
-
-## 6\. Setup SSH Keys for GitHub (Private Repo Access)
-
-\`\`\`bash
-ssh-keygen -t ed25519 -C "your-email@example.com"
-\`\`\`
-
-\`\`\`bash
-cat ~/.ssh/id_ed25519.pub
-\`\`\`
-
-- (Add the key at GitHub → Settings → SSH Keys) ([here](https://github.com/settings/keys))
-
-\`\`\`bash
-git clone git@github.com:your-username/your-private-repo.git
-\`\`\`
-
-* * *
-
-## 7\. Clone Your App
-
-\`\`\`bash
-git clone your_repository_url /path/to/your/app
-\`\`\`
-
-\`\`\`bash
-git pull
-\`\`\`
-
-**Navigate & Install Dependencies:**
-
-\`\`\`bash
-cd /path/to/your/app
-\`\`\`
-
-\`\`\`bash
-npm install
-\`\`\`
-
-* * *
-
-## 8\. Run Apps with PM2
-
-Navigate into app folder, then run:
-
-\`\`\`bash
-pm2 start npm --name *appName* --watch -- start
-
-# e.g pm2 start npm --name RevampCode --watch -- start
-\`\`\`
-
-OR
-
-\`\`\`bash
-pm2 start server.js --name app1 --watch -- 5000
-\`\`\`
-
-\`\`\`bash
-pm2 start app.js --name app2 --watch -- 5001
-\`\`\`
-
-**PM2 Useful Commands:**
-
-\`\`\`bash
-pm2 list
-\`\`\`
-
-\`\`\`bash
-pm2 stop all
-\`\`\`
-
-\`\`\`bash
-pm2 delete all
-\`\`\`
-
-\`\`\`bash
-pm2 monit
-\`\`\`
-
-\`\`\`bash
-pm2 restart app1
-\`\`\`
-
-\`\`\`bash
-pm2 save
-\`\`\`
-
-* * *
-
-## 9\. Configure Nginx Reverse Proxy
-
-Default config (drop unwanted requests):
-
-\`\`\`bash
-sudo nano /etc/nginx/sites-available/default
-\`\`\`
-
-\`\`\`bash
-server {
-    listen 80 default_server;
-        server_name _;
-        location / {
-        return 444;
-        }
-}
-\`\`\`
-
-### App 1 Configuration:
-
-\`\`\`bash
-sudo nano /etc/nginx/sites-available/app1
-
-# e.g sudo nano /etc/nginx/sites-available/RevampCode
-\`\`\`
-
-\`\`\`bash
-# For a node app
-server {
-    listen 80;
-    server_name app1.domain.com; # Replace with api.revampcode.com if using subdomain
-    location / {
-        proxy_pass http://localhost:8080;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-\`\`\`
-
-\`\`\`bash
-# HTML website (static files)
-server {
-    listen 80;
-    server_name revampcode.com www.revampcode.com;
-    root /var/www/revampcode;
-    index index.html;
-}
-
-server {
-    listen 80;
-    server_name mywatch.com www.mywatch.com;
-    root /var/www/mywatch;
-    index index.html;
-}
-
-\`\`\`
-
-Enable Config:
-
-\`\`\`bash
-sudo ln -s /etc/nginx/sites-available/app1 /etc/nginx/sites-enabled/
-\`\`\`
-
-(Repeat for each app.)
-
-* * *
-
-## 10\. Reload Nginx
-
-\`\`\`bash
-sudo nginx -t
-\`\`\`
-
-\`\`\`bash
-sudo systemctl reload nginx
-\`\`\`
-
-* * *
-
-## 11\. Update DNS A Records
-
-| Type | Name | Value |
-| --- | --- | --- |
-| A Record | app1 | VPS_IP_ADDRESS |
-| A Record | app2 | VPS_IP_ADDRESS |
-
-* * *
-
-## 12\. Setup SSL with Let's Encrypt
-
-**Install Certbot:**
-
-\`\`\`bash
-sudo apt install certbot python3-certbot-nginx
-\`\`\`
-
-**Obtain Certificates:**
-
-\`\`\`bash
-sudo certbot --nginx -d app1.domain.com -d app2.domain.com
-\`\`\`
-
-**Auto-Renew:**
-
-\`\`\`bash
-sudo certbot renew --dry-run
-\`\`\`
-
-* * *
-
-## 13\. Enable PM2 on Reboot
-
-\`\`\`bash
-pm2 startup
-\`\`\`
-
-\`\`\`bash
-pm2 save
-\`\`\`
-
-* * *
-
-## 14\. Monitoring & Maintenance
-
-**Monitor CPU & Memory:**
-
-\`\`\`bash
-htop
-\`\`\`
-
-\`\`\`bash
-free -h
-\`\`\`
-
-**Check Used Ports:**
-
-\`\`\`bash
-sudo lsof -i :8081
-\`\`\`
-
-\`\`\`bash
-sudo kill -9
-\`\`\`
-
-**Misc:**
-
-\`\`\`bash
-passwd username # Change user password
-\`\`\`
-
-&nbsp;
-
-USED PORTS
-
-8080- ScholarshipPulse
-
-8081  - RevampCode
-
-8082 - CSMTech
-
-8083 - Photonics
-
-8084 - RecolorPro
-
-8085 - Qdyizhiyou
-
-8086 - STN
-
-8087 - MzorlineWears
-
-8088 - Dosify`
-      };
-
       const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('overlay');
       const burger = document.getElementById('burger');
       const output = document.getElementById('md-output');
       const loader = document.getElementById('loader');
-      const topBar = document.getElementById('top-bar');
-      const backBtn = document.getElementById('back-btn');
-      const homeLink = document.getElementById('home-link');
       const navLinks = document.querySelectorAll('.nav-link');
-
-      // ── Page history stack for back navigation ──
-      let pageHistory = [];
 
       // ── Sidebar toggle (mobile) ──
       function openSidebar() {
@@ -1139,74 +627,41 @@ USED PORTS
       overlay.addEventListener('click', closeSidebar);
 
       // ── Load & render markdown ──
-      function loadPage(src, linkEl) {
+      async function loadPage(src, linkEl) {
          // Active state
          navLinks.forEach(l => l.classList.remove('active'));
-         if (linkEl && linkEl.classList) {
-            linkEl.classList.add('active');
-         }
+         linkEl.classList.add('active');
 
          // Loading indicator
          output.innerHTML = '';
          loader.style.display = 'block';
 
-         const md = pages[src];
-         if (!md) {
+         try {
+            const res = await fetch(src);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const md = await res.text();
+            loader.style.display = 'none';
+            output.innerHTML = marked.parse(md);
+            // Scroll to top
+            document.querySelector('.main').scrollTo({ top: 0, behavior: 'smooth' });
+         } catch (err) {
             loader.style.display = 'none';
             output.innerHTML = `
           <div class="placeholder">
             <span class="big">✕</span>
-            <span>Page not found: <code>${src}</code></span>
+            <span>Could not load <code>${src}</code></span>
+            <span style="font-size:.75rem;opacity:.5">${err.message}</span>
           </div>`;
-            closeSidebar();
-            return;
          }
 
-         loader.style.display = 'none';
-         output.innerHTML = marked.parse(md);
-
-         // Show back button if not on home page
-         if (src === 'home') {
-            topBar.style.display = 'none';
-         } else {
-            topBar.style.display = 'block';
-         }
-
-         // Scroll to top
-         document.querySelector('.main').scrollTo({ top: 0, behavior: 'smooth' });
          closeSidebar();
       }
-
-      // ── Navigate to a page and push to history ──
-      function navigateTo(src, linkEl) {
-         if (src !== 'home') {
-            pageHistory.push(src);
-         } else {
-            pageHistory = [];
-         }
-         loadPage(src, linkEl);
-         history.replaceState(null, '', '#' + src);
-      }
-
-      // ── Back button ──
-      backBtn.addEventListener('click', () => {
-         pageHistory.pop(); // remove current page
-         const prev = pageHistory.pop() || 'home'; // go to previous or home
-         const match = [...navLinks].find(l => l.dataset.src === prev);
-         navigateTo(prev, match || null);
-      });
-
-      // ── Home link (sidebar logo) ──
-      homeLink.addEventListener('click', () => {
-         const homeNav = [...navLinks].find(l => l.dataset.src === 'home');
-         navigateTo('home', homeNav || null);
-      });
 
       // ── Nav click handlers ──
       navLinks.forEach(link => {
          link.addEventListener('click', e => {
             e.preventDefault();
-            navigateTo(link.dataset.src, link);
+            loadPage(link.dataset.src, link);
          });
       });
 
@@ -1215,11 +670,11 @@ USED PORTS
          const hash = location.hash.replace('#', '');
          if (hash) {
             const match = [...navLinks].find(l => l.dataset.src === hash);
-            if (match) { navigateTo(match.dataset.src, match); return; }
+            if (match) { loadPage(match.dataset.src, match); return; }
          }
-         // Default: load home page
-         const homeNav = [...navLinks].find(l => l.dataset.src === 'home');
-         navigateTo('home', homeNav || null);
+         // Default: load first page
+         const first = navLinks[0];
+         if (first) loadPage(first.dataset.src, first);
       }
 
       // Update hash on navigation

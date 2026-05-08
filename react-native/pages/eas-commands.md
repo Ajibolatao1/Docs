@@ -1,6 +1,7 @@
 # EAS CLI — Common Commands Cheatsheet
 
 > **Tip:** Keep your CLI updated to avoid warnings.
+>
 > ```bash
 > npm install -g eas-cli
 > ```
@@ -51,6 +52,14 @@ eas build:list
 # Check build status/details
 eas build:view
 ```
+
+> **Note:** To output an **APK** build when using the `preview` profile, add the following configuration inside the `preview` object in your `eas.json`:
+>
+> ```json
+> "android": {
+>   "buildType": "apk"
+> }
+> ```
 
 ---
 
@@ -155,14 +164,14 @@ eas open
 
 ## Quick Reference
 
-| Task | Command |
-|---|---|
-| Login | `eas login` |
-| Android dev build | `eas build --platform android --profile development` |
-| Android prod build | `eas build --platform android --profile production` |
-| OTA update | `eas update --channel production --message "..."` |
-| Submit to Play Store | `eas submit --platform android` |
-| Add a secret | `eas secret:create --scope project --name KEY --value val` |
-| List secrets | `eas secret:list` |
-| List env vars | `eas env:list` |
-| View builds | `eas build:list` |
+| Task                 | Command                                                    |
+| -------------------- | ---------------------------------------------------------- |
+| Login                | `eas login`                                                |
+| Android dev build    | `eas build --platform android --profile development`       |
+| Android prod build   | `eas build --platform android --profile production`        |
+| OTA update           | `eas update --channel production --message "..."`          |
+| Submit to Play Store | `eas submit --platform android`                            |
+| Add a secret         | `eas secret:create --scope project --name KEY --value val` |
+| List secrets         | `eas secret:list`                                          |
+| List env vars        | `eas env:list`                                             |
+| View builds          | `eas build:list`                                           |
