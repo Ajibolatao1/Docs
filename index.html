@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Documentation Hub</title>
+   <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap"
+      rel="stylesheet">
+
+   <style>
+      *,
+      *::before,
+      *::after {
+         box-sizing: border-box;
+         margin: 0;
+         padding: 0;
+      }
+
+      :root {
+         --bg: #0e0f11;
+         --surface: #15171a;
+         --surface2: #1c1f23;
+         --border: #2a2d33;
+         --accent: #5b8dee;
+         --accent-soft: rgba(91, 141, 238, .12);
+         --text: #d4d8e2;
+         --text-muted: #6b7280;
+         --text-strong: #f0f2f6;
+         --radius: 8px;
+         --mono: 'JetBrains Mono', monospace;
+         --serif: 'Crimson Pro', Georgia, serif;
+         --transition: .22s cubic-bezier(.4, 0, .2, 1);
+      }
+
+      html,
+      body {
+         height: 100%;
+         background: var(--bg);
+         color: var(--text);
+         font-family: var(--serif);
+         font-size: 18px;
+         line-height: 1.7;
+      }
+
+      body {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         min-height: 100vh;
+         padding: 40px 24px;
+      }
+
+      /* ── Container ── */
+      .container {
+         max-width: 680px;
+         width: 100%;
+         text-align: center;
+      }
+
+      /* ── Logo / Brand ── */
+      .brand {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         gap: 12px;
+         margin-bottom: 24px;
+      }
+
+      .brand .dot {
+         width: 10px;
+         height: 10px;
+         background: var(--accent);
+         border-radius: 50%;
+         box-shadow: 0 0 12px var(--accent);
+         animation: pulse 2.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+
+         0%,
+         100% {
+            opacity: 1;
+            transform: scale(1);
+         }
+
+         50% {
+            opacity: .4;
+            transform: scale(.7);
+         }
+      }
+
+      .brand-label {
+         font-family: var(--mono);
+         font-size: .72rem;
+         font-weight: 600;
+         letter-spacing: .15em;
+         text-transform: uppercase;
+         color: var(--accent);
+      }
+
+      /* ── Title ── */
+      h1 {
+         font-family: var(--serif);
+         font-weight: 300;
+         font-size: 2.8rem;
+         color: var(--text-strong);
+         line-height: 1.2;
+         letter-spacing: -.02em;
+         margin-bottom: 16px;
+      }
+
+      .subtitle {
+         font-family: var(--mono);
+         font-size: .85rem;
+         color: var(--text-muted);
+         margin-bottom: 48px;
+         line-height: 1.6;
+      }
+
+      .subtitle strong {
+         color: var(--text);
+      }
+
+      /* ── Card grid ── */
+      .cards {
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         gap: 20px;
+         margin-bottom: 48px;
+      }
+
+      .card {
+         background: var(--surface);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         padding: 32px 24px;
+         text-decoration: none;
+         color: var(--text);
+         transition: all var(--transition);
+         position: relative;
+         overflow: hidden;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         text-align: center;
+      }
+
+      .card::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         height: 3px;
+         background: var(--accent);
+         transform: scaleX(0);
+         transform-origin: left;
+         transition: transform var(--transition);
+      }
+
+      .card:hover {
+         background: var(--surface2);
+         border-color: rgba(91, 141, 238, .3);
+         transform: translateY(-3px);
+         box-shadow: 0 8px 32px rgba(0, 0, 0, .3);
+      }
+
+      .card:hover::before {
+         transform: scaleX(1);
+      }
+
+      .card-icon {
+         font-size: 2.2rem;
+         margin-bottom: 16px;
+         opacity: .7;
+      }
+
+      .card-title {
+         font-family: var(--mono);
+         font-size: .95rem;
+         font-weight: 600;
+         color: var(--text-strong);
+         margin-bottom: 8px;
+         letter-spacing: .02em;
+      }
+
+      .card-desc {
+         font-size: .82rem;
+         color: var(--text-muted);
+         line-height: 1.5;
+         font-family: var(--mono);
+      }
+
+      .card .count {
+         display: inline-block;
+         margin-top: 14px;
+         font-family: var(--mono);
+         font-size: .7rem;
+         color: var(--accent);
+         background: var(--accent-soft);
+         padding: 3px 10px;
+         border-radius: 20px;
+         letter-spacing: .04em;
+      }
+
+      /* ── Footer ── */
+      .footer {
+         font-family: var(--mono);
+         font-size: .65rem;
+         color: var(--text-muted);
+         letter-spacing: .04em;
+      }
+
+      .footer a {
+         color: var(--accent);
+         text-decoration: none;
+      }
+
+      .footer a:hover {
+         text-decoration: underline;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 600px) {
+         .cards {
+            grid-template-columns: 1fr;
+            gap: 16px;
+         }
+
+         h1 {
+            font-size: 2rem;
+         }
+
+         body {
+            padding: 32px 20px;
+         }
+
+         .card {
+            padding: 24px 20px;
+         }
+      }
+
+      @media (max-width: 400px) {
+         h1 {
+            font-size: 1.7rem;
+         }
+
+         .subtitle {
+            font-size: .78rem;
+         }
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar {
+         width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+         background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+         background: var(--border);
+         border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+         background: var(--text-muted);
+      }
+   </style>
+</head>
+
+<body>
+
+   <div class="container">
+      <!-- Brand -->
+      <div class="brand">
+         <span class="dot"></span>
+         <span class="brand-label">Documentation Hub</span>
+      </div>
+
+      <!-- Title -->
+      <h1>Personal Knowledge Base</h1>
+      <p class="subtitle">
+         A curated collection of <strong>developer notes</strong>, <strong>cheatsheets</strong>,
+         and <strong>setup guides</strong> — organized by topic.
+      </p>
+
+      <!-- Cards -->
+      <div class="cards">
+         <a class="card" href="react-native/index.html">
+            <div class="card-icon">⚛</div>
+            <div class="card-title">React Native & Expo</div>
+            <div class="card-desc">
+               Development notes, EAS commands, environment variables, auth setup, and essential UI libraries.
+            </div>
+            <span class="count">6 pages</span>
+         </a>
+
+         <a class="card" href="personal/index.html">
+            <div class="card-icon">⌨</div>
+            <div class="card-title">Personal & DevOps</div>
+            <div class="card-desc">
+               Essential CLI commands, server setup guides, and general development workflows.
+            </div>
+            <span class="count">2 pages</span>
+         </a>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+         &copy; 2026 — Documentation Hub
+      </div>
+   </div>
+
+</body>
+
+</html>

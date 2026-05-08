@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>My Docs</title>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+   <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap"
+      rel="stylesheet">
+
+   <style>
+      *,
+      *::before,
+      *::after {
+         box-sizing: border-box;
+         margin: 0;
+         padding: 0;
+      }
+
+      :root {
+         --bg: #0e0f11;
+         --surface: #15171a;
+         --surface2: #1c1f23;
+         --border: #2a2d33;
+         --accent: #5b8dee;
+         --accent-soft: rgba(91, 141, 238, .12);
+         --text: #d4d8e2;
+         --text-muted: #6b7280;
+         --text-strong: #f0f2f6;
+         --sidebar-w: 260px;
+         --header-h: 54px;
+         --radius: 8px;
+         --mono: 'JetBrains Mono', monospace;
+         --serif: 'Crimson Pro', Georgia, serif;
+         --transition: .22s cubic-bezier(.4, 0, .2, 1);
+      }
+
+      html,
+      body {
+         height: 100%;
+         background: var(--bg);
+         color: var(--text);
+         font-family: var(--serif);
+         font-size: 18px;
+         line-height: 1.7;
+      }
+
+      /* ── Layout ── */
+      .layout {
+         display: flex;
+         height: 100vh;
+         overflow: hidden;
+      }
+
+      /* ── Mobile header ── */
+      .topbar {
+         display: none;
+         position: fixed;
+         top: 0;
+         left: 0;
+         right: 0;
+         height: var(--header-h);
+         background: var(--surface);
+         border-bottom: 1px solid var(--border);
+         align-items: center;
+         padding: 0 16px;
+         z-index: 200;
+         gap: 14px;
+      }
+
+      .topbar-title {
+         font-family: var(--mono);
+         font-size: .85rem;
+         color: var(--text-strong);
+         letter-spacing: .05em;
+      }
+
+      .burger {
+         background: none;
+         border: none;
+         cursor: pointer;
+         display: flex;
+         flex-direction: column;
+         gap: 5px;
+         padding: 4px;
+         color: var(--text);
+      }
+
+      .burger span {
+         display: block;
+         width: 22px;
+         height: 2px;
+         background: var(--text);
+         border-radius: 2px;
+         transition: var(--transition);
+      }
+
+      .burger.open span:nth-child(1) {
+         transform: translateY(7px) rotate(45deg);
+      }
+
+      .burger.open span:nth-child(2) {
+         opacity: 0;
+      }
+
+      .burger.open span:nth-child(3) {
+         transform: translateY(-7px) rotate(-45deg);
+      }
+
+      /* ── Overlay ── */
+      .overlay {
+         display: none;
+         position: fixed;
+         inset: 0;
+         z-index: 150;
+         background: rgba(0, 0, 0, .55);
+         backdrop-filter: blur(2px);
+         opacity: 0;
+         transition: opacity var(--transition);
+      }
+
+      .overlay.visible {
+         opacity: 1;
+      }
+
+      /* ── Sidebar ── */
+      .sidebar {
+         width: var(--sidebar-w);
+         flex-shrink: 0;
+         background: var(--surface);
+         border-right: 1px solid var(--border);
+         display: flex;
+         flex-direction: column;
+         overflow-y: auto;
+         transition: transform var(--transition);
+      }
+
+      .sidebar-logo {
+         padding: 28px 22px 20px;
+         font-family: var(--mono);
+         font-size: .78rem;
+         font-weight: 600;
+         letter-spacing: .1em;
+         text-transform: uppercase;
+         color: var(--accent);
+         border-bottom: 1px solid var(--border);
+         display: flex;
+         align-items: center;
+         gap: 10px;
+      }
+
+      .sidebar-logo .dot {
+         width: 8px;
+         height: 8px;
+         background: var(--accent);
+         border-radius: 50%;
+         box-shadow: 0 0 8px var(--accent);
+         animation: pulse 2.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+
+         0%,
+         100% {
+            opacity: 1;
+            transform: scale(1);
+         }
+
+         50% {
+            opacity: .4;
+            transform: scale(.7);
+         }
+      }
+
+      .sidebar-section {
+         padding: 20px 14px 10px;
+         font-family: var(--mono);
+         font-size: .65rem;
+         letter-spacing: .15em;
+         text-transform: uppercase;
+         color: var(--text-muted);
+      }
+
+      .nav-link {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         padding: 9px 14px;
+         margin: 2px 8px;
+         border-radius: var(--radius);
+         text-decoration: none;
+         color: var(--text);
+         font-family: var(--mono);
+         font-size: .82rem;
+         cursor: pointer;
+         transition: background var(--transition), color var(--transition), padding-left var(--transition);
+         border: 1px solid transparent;
+         position: relative;
+      }
+
+      .nav-link::before {
+         content: '';
+         width: 3px;
+         height: 0;
+         background: var(--accent);
+         border-radius: 2px;
+         position: absolute;
+         left: 0;
+         top: 50%;
+         transform: translateY(-50%);
+         transition: height var(--transition);
+      }
+
+      .nav-link:hover {
+         background: var(--surface2);
+         color: var(--text-strong);
+         padding-left: 20px;
+      }
+
+      .nav-link:hover::before {
+         height: 60%;
+      }
+
+      .nav-link.active {
+         background: var(--accent-soft);
+         color: var(--accent);
+         border-color: rgba(91, 141, 238, .2);
+         padding-left: 20px;
+      }
+
+      .nav-link.active::before {
+         height: 60%;
+      }
+
+      .nav-link .icon {
+         opacity: .5;
+         font-size: .9rem;
+      }
+
+      .sidebar-footer {
+         margin-top: auto;
+         padding: 16px 18px;
+         border-top: 1px solid var(--border);
+         font-family: var(--mono);
+         font-size: .65rem;
+         color: var(--text-muted);
+         letter-spacing: .04em;
+      }
+
+      /* ── Main content ── */
+      .main {
+         flex: 1;
+         overflow-y: auto;
+         display: flex;
+         flex-direction: column;
+      }
+
+      .content-wrap {
+         max-width: 740px;
+         width: 100%;
+         margin: 0 auto;
+         padding: 52px 48px 80px;
+      }
+
+      /* ── Loading / empty state ── */
+      .placeholder {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         height: 100%;
+         gap: 16px;
+         color: var(--text-muted);
+         font-family: var(--mono);
+         font-size: .85rem;
+      }
+
+      .placeholder .big {
+         font-size: 2.5rem;
+         opacity: .2;
+      }
+
+      .loader {
+         width: 32px;
+         height: 32px;
+         border: 2px solid var(--border);
+         border-top-color: var(--accent);
+         border-radius: 50%;
+         animation: spin .7s linear infinite;
+         display: none;
+      }
+
+      @keyframes spin {
+         to {
+            transform: rotate(360deg);
+         }
+      }
+
+      /* ── Markdown typography ── */
+      #md-output {
+         animation: fadeIn .35s ease;
+      }
+
+      @keyframes fadeIn {
+         from {
+            opacity: 0;
+            transform: translateY(6px);
+         }
+
+         to {
+            opacity: 1;
+            transform: none;
+         }
+      }
+
+      #md-output h1 {
+         font-family: var(--serif);
+         font-weight: 300;
+         font-size: 2.6rem;
+         color: var(--text-strong);
+         line-height: 1.2;
+         border-bottom: 1px solid var(--border);
+         padding-bottom: 18px;
+         margin-bottom: 28px;
+         letter-spacing: -.02em;
+      }
+
+      #md-output h2 {
+         font-family: var(--serif);
+         font-weight: 600;
+         font-size: 1.55rem;
+         color: var(--text-strong);
+         margin: 42px 0 14px;
+         letter-spacing: -.01em;
+      }
+
+      #md-output h3 {
+         font-family: var(--mono);
+         font-size: .95rem;
+         font-weight: 600;
+         color: var(--accent);
+         margin: 28px 0 10px;
+         text-transform: uppercase;
+         letter-spacing: .08em;
+      }
+
+      #md-output p {
+         margin-bottom: 1.1em;
+         color: var(--text);
+      }
+
+      #md-output a {
+         color: var(--accent);
+         text-decoration: underline;
+         text-underline-offset: 3px;
+      }
+
+      #md-output strong {
+         color: var(--text-strong);
+         font-weight: 600;
+      }
+
+      #md-output em {
+         font-style: italic;
+         color: var(--text-strong);
+         opacity: .85;
+      }
+
+      #md-output ul,
+      #md-output ol {
+         padding-left: 1.5em;
+         margin-bottom: 1.1em;
+      }
+
+      #md-output li {
+         margin-bottom: .35em;
+      }
+
+      #md-output li::marker {
+         color: var(--accent);
+      }
+
+      #md-output blockquote {
+         border-left: 3px solid var(--accent);
+         background: var(--surface2);
+         margin: 24px 0;
+         padding: 14px 20px;
+         border-radius: 0 var(--radius) var(--radius) 0;
+         font-style: italic;
+         color: var(--text-muted);
+      }
+
+      #md-output code {
+         font-family: var(--mono);
+         font-size: .8em;
+         background: var(--surface2);
+         color: var(--accent);
+         padding: 2px 6px;
+         border-radius: 4px;
+         border: 1px solid var(--border);
+      }
+
+      #md-output pre {
+         background: var(--surface2);
+         border: 1px solid var(--border);
+         border-radius: var(--radius);
+         padding: 20px 22px;
+         margin: 20px 0;
+         overflow-x: auto;
+      }
+
+      #md-output pre code {
+         background: none;
+         border: none;
+         padding: 0;
+         font-size: .82rem;
+         color: var(--text);
+         line-height: 1.7;
+      }
+
+      #md-output hr {
+         border: none;
+         border-top: 1px solid var(--border);
+         margin: 36px 0;
+      }
+
+      #md-output table {
+         width: 100%;
+         border-collapse: collapse;
+         margin: 24px 0;
+         font-size: .9rem;
+         font-family: var(--mono);
+      }
+
+      #md-output th {
+         background: var(--surface2);
+         color: var(--accent);
+         padding: 10px 14px;
+         text-align: left;
+         border: 1px solid var(--border);
+         font-weight: 600;
+         font-size: .75rem;
+         letter-spacing: .06em;
+         text-transform: uppercase;
+      }
+
+      #md-output td {
+         padding: 10px 14px;
+         border: 1px solid var(--border);
+         color: var(--text);
+      }
+
+      #md-output tr:hover td {
+         background: var(--surface2);
+      }
+
+      #md-output img {
+         max-width: 100%;
+         border-radius: var(--radius);
+         border: 1px solid var(--border);
+         margin: 16px 0;
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar {
+         width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+         background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+         background: var(--border);
+         border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+         background: var(--text-muted);
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 768px) {
+         .topbar {
+            display: flex;
+         }
+
+         .layout {
+            padding-top: var(--header-h);
+         }
+
+         .sidebar {
+            position: fixed;
+            top: var(--header-h);
+            bottom: 0;
+            left: 0;
+            z-index: 160;
+            transform: translateX(-100%);
+            width: min(var(--sidebar-w), 80vw);
+         }
+
+         .sidebar.open {
+            transform: translateX(0);
+         }
+
+         .overlay {
+            display: block;
+         }
+
+         .content-wrap {
+            padding: 32px 22px 60px;
+         }
+
+         #md-output h1 {
+            font-size: 2rem;
+         }
+      }
+
+      @media (max-width: 480px) {
+         .content-wrap {
+            padding: 24px 16px 50px;
+         }
+
+         #md-output h1 {
+            font-size: 1.7rem;
+         }
+      }
+   </style>
+</head>
+
+<body>
+
+   <!-- Mobile topbar -->
+   <header class="topbar">
+      <button class="burger" id="burger" aria-label="Toggle menu">
+         <span></span><span></span><span></span>
+      </button>
+      <span class="topbar-title">DOCS</span>
+   </header>
+
+   <!-- Overlay for mobile -->
+   <div class="overlay" id="overlay"></div>
+
+   <div class="layout">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+         <div class="sidebar-logo" id="home-link" style="cursor:pointer">
+            <span class="dot"></span>
+            My Docs
+         </div>
+
+         <div class="sidebar-section">Navigation</div>
+
+         <nav id="nav">
+            <a class="nav-link" data-src="home" href="#">
+               <span class="icon">⌂</span> Home
+            </a>
+
+            <div class="sidebar-section">Pages</div>
+
+            <a class="nav-link" data-src="pages/essential-cli-commands.md" href="#">
+               <span class="icon">◈</span> Essential CLI Commands
+            </a>
+            <a class="nav-link" data-src="pages/multiple-nodejs-apps-on-vps.md" href="#">
+               <span class="icon">◈</span> Multiple Node.js Apps on VPS
+            </a>
+         </nav>
+
+         <div class="sidebar-footer">
+            Built with marked.js
+         </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+         <div class="content-wrap">
+            <div class="top-bar" id="top-bar" style="display:none;margin-bottom:16px">
+               <button id="back-btn" style="background:none;border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:var(--radius);cursor:pointer;font-family:var(--mono);font-size:.78rem;transition:background var(--transition)">
+                  ← Back
+               </button>
+            </div>
+            <div class="loader" id="loader"></div>
+            <div id="md-output">
+               <div class="placeholder">
+                  <span class="big">◈</span>
+                  <span>Select a page from the sidebar</span>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+
+   <script>
+      // ── Inline markdown pages (works with file:// protocol) ──
+      const pages = {
+         "home": `# Welcome to My Docs
+
+A collection of personal reference notes and guides.
+
+---
+
+## 📋 Available Pages
+
+| Page | Description |
+|------|-------------|
+| [**Essential CLI Commands**](#pages/essential-cli-commands.md) | A structured guide to essential command-line interface commands |
+| [**Multiple Node.js Apps on VPS**](#pages/multiple-nodejs-apps-on-vps.md) | Deploying multiple Node.js apps with Nginx, PM2, and SSL |
+
+---
+
+Select a page from the sidebar to get started.`,
+         "pages/essential-cli-commands.md": `# Essential CLI Commands Reference
+
+**Command-Line Interface (CLI)** commands are fundamental for interacting with operating systems efficiently. Below is a structured guide to essential CLI commands, formatted for Joplin.
+
+* * *
+
+## Navigation Commands
+
+These commands help you move through the file system and check your location:
+
+- \`cd\` - **Change directory** (e.g., \`cd Documents\` moves to the "Documents" folder)
+    - \`cd /\` - Navigate to the **system's root directory** (uses an absolute path)
+    - \`cd ~\` - Go to the **current user's home directory**
+    - \`cd -\` - Switch to the **previous directory** you were working in
+- \`pwd\` - **Print Working Directory** (displays your exact location in the file system)
+
+* * *
+
+## File & Directory Management
+
+Create, organize, and delete files and folders with these commands:
+
+- \`touch [filename]\` - **Create a new empty file** (e.g., \`touch notes.md\` creates a Markdown file)
+- \`mkdir [directory]\` - **Make a new directory** (e.g., \`mkdir Projects\` creates a "Projects" folder)
+    - \`mkdir -p [path]\` - Create **nested directories** (e.g., \`mkdir -p Music/Jazz\` creates both "Music" and "Jazz")
+- \`ls\` - **List contents** of the current directory
+    - \`ls -l\` - Show a **detailed list** (includes permissions, file size, and modification date)
+    - \`ls -a\` - List **hidden files/folders** (those starting with a \`.\`, like \`.bashrc\`)
+    - \`ls [path]\` - List contents of a specific directory (e.g., \`ls Downloads\`)
+- \`rm [item]\` - **Remove a file or empty directory**
+    - \`rm --rf [item]\` - **Force remove** non-empty directories and all contents (**use with extreme caution!**)
+- \`cp [source] [destination]\` - **Copy files/directories** (e.g., \`cp report.pdf ~/Backups\`)
+    - \`cp -r [source] [destination]\` - Copy directories **recursively** (including all contents)
+- \`mv [source] [destination]\` - **Move or rename** files/directories (e.g., \`mv oldname.txt newname.txt\` renames a file)
+
+* * *
+
+## File Content Operations
+
+View, create, or edit file contents with these tools:
+
+- \`cat [filename]\` - **Concatenate and display** file contents (e.g., \`cat todo.txt\` shows your to-do list)
+    - \`cat > [filename]\` - **Write text to a file** (overwrites existing content; press \`ctrl + d\` to save)
+    - \`cat >> [filename]\` - **Append text to a file** (preserves existing content)
+- \`echo "[text]"\` - **Print text** to the terminal
+    - \`echo "[text]" > [filename]\` - Write text directly to a file (overwrites)
+    - \`echo "[text]" >> [filename]\` - Append text to a file (adds to the end)
+- \`nano [filename]\` / \`vim [filename]\` - Open a **text editor** to modify files (\`nano\` is beginner-friendly)
+
+* * *
+
+## Output Redirection
+
+Control where command output is sent (instead of just the terminal):
+
+- \`>\` - **Redirect output to a file** (overwrites existing content)
+    **Example:** \`ls -l > files_list.txt\` saves the detailed directory list to "files_list.txt"
+- \`>>\` - **Append output to a file** (adds to existing content instead of overwriting)
+    **Example:** \`date >> activity_log.txt\` adds the current date/time to "activity_log.txt"
+
+* * *
+
+## Terminal Controls
+
+Manage your terminal session with these shortcuts:
+
+- \`clear\` or \`ctrl + l\` - **Clear the terminal screen**
+- \`ctrl + c\` - **Cancel the currently running command**
+- \`ctrl + d\` - **Exit the terminal** or current mode (e.g., when editing with \`cat >\`)
+- \`exit\` - **Close the terminal session** entirely
+
+* * *
+
+## System Information
+
+Get details about your system, user, and commands:
+
+- \`date\` - Show the **current date and time**
+- \`whoami\` - Display the **username** of the currently logged-in user
+- \`[command] --help\` - Show all **options/flags** for a command (e.g., \`ls --help\`)
+- \`man [command]\` - Open the **manual page** for a command (more detailed than \`--help\`; press \`q\` to exit)
+- \`df -h\` - Show **disk space usage** (in human-readable format, e.g., GB)
+- \`free -h\` - Display **system memory (RAM) usage**
+
+* * *
+
+## Search & Filter
+
+Find files or text efficiently:
+
+- \`find [path] -iname "[pattern]"\` - **Search for files/directories by name**
+    **Example:** \`find ~/Books -iname "*.pdf"\` finds all PDF files in your "Books" folder
+- \`grep "[text]" [filename]\` - **Search for text within a file**
+    **Example:** \`grep "urgent" tasks.txt\` finds all lines with "urgent" in "tasks.txt"
+- \`[command] | grep "[text]"\` - **Filter command output** to show only lines with specific text
+    **Example:** \`ls --help | grep "hidden"\` shows help info related to hidden files
+
+* * *
+
+## Advanced Operations
+
+For complex tasks, use these commands:
+
+- \`touch file{001..100}.txt\` - **Create multiple files** (e.g., 100 files named "file001.txt" to "file100.txt")
+- \`chmod [permissions] [file]\` - **Change file permissions** (e.g., \`chmod 755 script.sh\` makes a script executable)
+- \`sudo [command]\` - Run a command with **administrative (root) privileges** (e.g., \`sudo apt update\` on Linux)
+- \`tar -czf [archive].tar.gz [files]\` - **Create a compressed archive** (e.g., \`tar -czf photos.tar.gz ~/Pictures\`)
+- \`tar -xzf [archive].tar.gz\` - **Extract a compressed archive**`,
+         "pages/multiple-nodejs-apps-on-vps.md": `# VPS - Deploying Multiple Node.js Apps on a VPS with Nginx, PM2, and SSL
+
+* * *
+
+## 1\. Connect to Your VPS via SSH
+
+\`\`\`bash
+ssh root@your_server_ip
+
+Ajibolatao1.
+\`\`\`
+
+* * *
+
+## 2\. Update Your VPS
+
+\`\`\`bash
+sudo apt update && sudo apt upgrade -y
+\`\`\`
+
+### Create a New User (recommended instead of using root):
+
+\`\`\`bash
+sudo adduser newuser
+\`\`\`
+
+\`\`\`bash
+sudo usermod -aG sudo newuser
+\`\`\`
+
+\`\`\`bash
+su - newuser
+\`\`\`
+
+\`\`\`bash
+sudo whoami
+\`\`\`
+
+* * *
+
+## 3\. Install Node.js, NPM, and Git
+
+\`\`\`bash
+curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+\`\`\`
+
+\`\`\`bash
+sudo -E bash nodesource_setup.sh
+\`\`\`
+
+\`\`\`bash
+sudo apt install -y nodejs
+\`\`\`
+
+\`\`\`bash
+sudo apt install git -y
+\`\`\`
+
+**Verify Installation:**
+
+\`\`\`bash
+node -v
+\`\`\`
+
+\`\`\`bash
+npm -v
+\`\`\`
+
+\`\`\`bash
+git --version
+\`\`\`
+
+* * *
+
+## 4\. Install PM2 (Process Manager)
+
+\`\`\`bash
+sudo npm install -g pm2
+\`\`\`
+
+**Verify Installation:**
+
+\`\`\`bash
+pm2 -v
+\`\`\`
+
+* * *
+
+## 5\. Install and Configure Nginx
+
+\`\`\`bash
+sudo apt install nginx
+\`\`\`
+
+**Start & Enable Nginx:**
+
+\`\`\`bash
+sudo systemctl start nginx
+\`\`\`
+
+\`\`\`bash
+sudo systemctl enable nginx
+\`\`\`
+
+\`\`\`bash
+sudo systemctl status nginx
+\`\`\`
+
+**Allow Access to Required Ports:**
+
+\`\`\`bash
+sudo ufw allow OpenSSH
+\`\`\`
+
+\`\`\`bash
+sudo ufw allow 'Nginx HTTP'
+\`\`\`
+
+\`\`\`bash
+sudo ufw allow 'Nginx Full'
+\`\`\`
+
+* * *
+
+\`\`\`bash
+sudo ufw allow 8080
+\`\`\`
+
+## 6\. Setup SSH Keys for GitHub (Private Repo Access)
+
+\`\`\`bash
+ssh-keygen -t ed25519 -C "your-email@example.com"
+\`\`\`
+
+\`\`\`bash
+cat ~/.ssh/id_ed25519.pub
+\`\`\`
+
+- (Add the key at GitHub → Settings → SSH Keys) ([here](https://github.com/settings/keys))
+
+\`\`\`bash
+git clone git@github.com:your-username/your-private-repo.git
+\`\`\`
+
+* * *
+
+## 7\. Clone Your App
+
+\`\`\`bash
+git clone your_repository_url /path/to/your/app
+\`\`\`
+
+\`\`\`bash
+git pull
+\`\`\`
+
+**Navigate & Install Dependencies:**
+
+\`\`\`bash
+cd /path/to/your/app
+\`\`\`
+
+\`\`\`bash
+npm install
+\`\`\`
+
+* * *
+
+## 8\. Run Apps with PM2
+
+Navigate into app folder, then run:
+
+\`\`\`bash
+pm2 start npm --name *appName* --watch -- start
+
+# e.g pm2 start npm --name RevampCode --watch -- start
+\`\`\`
+
+OR
+
+\`\`\`bash
+pm2 start server.js --name app1 --watch -- 5000
+\`\`\`
+
+\`\`\`bash
+pm2 start app.js --name app2 --watch -- 5001
+\`\`\`
+
+**PM2 Useful Commands:**
+
+\`\`\`bash
+pm2 list
+\`\`\`
+
+\`\`\`bash
+pm2 stop all
+\`\`\`
+
+\`\`\`bash
+pm2 delete all
+\`\`\`
+
+\`\`\`bash
+pm2 monit
+\`\`\`
+
+\`\`\`bash
+pm2 restart app1
+\`\`\`
+
+\`\`\`bash
+pm2 save
+\`\`\`
+
+* * *
+
+## 9\. Configure Nginx Reverse Proxy
+
+Default config (drop unwanted requests):
+
+\`\`\`bash
+sudo nano /etc/nginx/sites-available/default
+\`\`\`
+
+\`\`\`bash
+server {
+    listen 80 default_server;
+        server_name _;
+        location / {
+        return 444;
+        }
+}
+\`\`\`
+
+### App 1 Configuration:
+
+\`\`\`bash
+sudo nano /etc/nginx/sites-available/app1
+
+# e.g sudo nano /etc/nginx/sites-available/RevampCode
+\`\`\`
+
+\`\`\`bash
+# For a node app
+server {
+    listen 80;
+    server_name app1.domain.com; # Replace with api.revampcode.com if using subdomain
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+\`\`\`
+
+\`\`\`bash
+# HTML website (static files)
+server {
+    listen 80;
+    server_name revampcode.com www.revampcode.com;
+    root /var/www/revampcode;
+    index index.html;
+}
+
+server {
+    listen 80;
+    server_name mywatch.com www.mywatch.com;
+    root /var/www/mywatch;
+    index index.html;
+}
+
+\`\`\`
+
+Enable Config:
+
+\`\`\`bash
+sudo ln -s /etc/nginx/sites-available/app1 /etc/nginx/sites-enabled/
+\`\`\`
+
+(Repeat for each app.)
+
+* * *
+
+## 10\. Reload Nginx
+
+\`\`\`bash
+sudo nginx -t
+\`\`\`
+
+\`\`\`bash
+sudo systemctl reload nginx
+\`\`\`
+
+* * *
+
+## 11\. Update DNS A Records
+
+| Type | Name | Value |
+| --- | --- | --- |
+| A Record | app1 | VPS_IP_ADDRESS |
+| A Record | app2 | VPS_IP_ADDRESS |
+
+* * *
+
+## 12\. Setup SSL with Let's Encrypt
+
+**Install Certbot:**
+
+\`\`\`bash
+sudo apt install certbot python3-certbot-nginx
+\`\`\`
+
+**Obtain Certificates:**
+
+\`\`\`bash
+sudo certbot --nginx -d app1.domain.com -d app2.domain.com
+\`\`\`
+
+**Auto-Renew:**
+
+\`\`\`bash
+sudo certbot renew --dry-run
+\`\`\`
+
+* * *
+
+## 13\. Enable PM2 on Reboot
+
+\`\`\`bash
+pm2 startup
+\`\`\`
+
+\`\`\`bash
+pm2 save
+\`\`\`
+
+* * *
+
+## 14\. Monitoring & Maintenance
+
+**Monitor CPU & Memory:**
+
+\`\`\`bash
+htop
+\`\`\`
+
+\`\`\`bash
+free -h
+\`\`\`
+
+**Check Used Ports:**
+
+\`\`\`bash
+sudo lsof -i :8081
+\`\`\`
+
+\`\`\`bash
+sudo kill -9
+\`\`\`
+
+**Misc:**
+
+\`\`\`bash
+passwd username # Change user password
+\`\`\`
+
+&nbsp;
+
+USED PORTS
+
+8080- ScholarshipPulse
+
+8081  - RevampCode
+
+8082 - CSMTech
+
+8083 - Photonics
+
+8084 - RecolorPro
+
+8085 - Qdyizhiyou
+
+8086 - STN
+
+8087 - MzorlineWears
+
+8088 - Dosify`
+      };
+
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const burger = document.getElementById('burger');
+      const output = document.getElementById('md-output');
+      const loader = document.getElementById('loader');
+      const topBar = document.getElementById('top-bar');
+      const backBtn = document.getElementById('back-btn');
+      const homeLink = document.getElementById('home-link');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      // ── Page history stack for back navigation ──
+      let pageHistory = [];
+
+      // ── Sidebar toggle (mobile) ──
+      function openSidebar() {
+         sidebar.classList.add('open');
+         overlay.classList.add('visible');
+         burger.classList.add('open');
+      }
+      function closeSidebar() {
+         sidebar.classList.remove('open');
+         overlay.classList.remove('visible');
+         burger.classList.remove('open');
+      }
+      burger.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
+      overlay.addEventListener('click', closeSidebar);
+
+      // ── Load & render markdown ──
+      function loadPage(src, linkEl) {
+         // Active state
+         navLinks.forEach(l => l.classList.remove('active'));
+         if (linkEl && linkEl.classList) {
+            linkEl.classList.add('active');
+         }
+
+         // Loading indicator
+         output.innerHTML = '';
+         loader.style.display = 'block';
+
+         const md = pages[src];
+         if (!md) {
+            loader.style.display = 'none';
+            output.innerHTML = `
+          <div class="placeholder">
+            <span class="big">✕</span>
+            <span>Page not found: <code>${src}</code></span>
+          </div>`;
+            closeSidebar();
+            return;
+         }
+
+         loader.style.display = 'none';
+         output.innerHTML = marked.parse(md);
+
+         // Show back button if not on home page
+         if (src === 'home') {
+            topBar.style.display = 'none';
+         } else {
+            topBar.style.display = 'block';
+         }
+
+         // Scroll to top
+         document.querySelector('.main').scrollTo({ top: 0, behavior: 'smooth' });
+         closeSidebar();
+      }
+
+      // ── Navigate to a page and push to history ──
+      function navigateTo(src, linkEl) {
+         if (src !== 'home') {
+            pageHistory.push(src);
+         } else {
+            pageHistory = [];
+         }
+         loadPage(src, linkEl);
+         history.replaceState(null, '', '#' + src);
+      }
+
+      // ── Back button ──
+      backBtn.addEventListener('click', () => {
+         pageHistory.pop(); // remove current page
+         const prev = pageHistory.pop() || 'home'; // go to previous or home
+         const match = [...navLinks].find(l => l.dataset.src === prev);
+         navigateTo(prev, match || null);
+      });
+
+      // ── Home link (sidebar logo) ──
+      homeLink.addEventListener('click', () => {
+         const homeNav = [...navLinks].find(l => l.dataset.src === 'home');
+         navigateTo('home', homeNav || null);
+      });
+
+      // ── Nav click handlers ──
+      navLinks.forEach(link => {
+         link.addEventListener('click', e => {
+            e.preventDefault();
+            navigateTo(link.dataset.src, link);
+         });
+      });
+
+      // ── Auto-load from URL hash ──
+      function loadFromHash() {
+         const hash = location.hash.replace('#', '');
+         if (hash) {
+            const match = [...navLinks].find(l => l.dataset.src === hash);
+            if (match) { navigateTo(match.dataset.src, match); return; }
+         }
+         // Default: load home page
+         const homeNav = [...navLinks].find(l => l.dataset.src === 'home');
+         navigateTo('home', homeNav || null);
+      }
+
+      // Update hash on navigation
+      navLinks.forEach(link => {
+         link.addEventListener('click', () => {
+            history.replaceState(null, '', '#' + link.dataset.src);
+         });
+      });
+
+      loadFromHash();
+      window.addEventListener('hashchange', loadFromHash);
+   </script>
+</body>
+
+</html>
