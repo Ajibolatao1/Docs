@@ -6,13 +6,13 @@ A curated collection of notes, cheatsheets, and setup guides for building produc
 
 ## 📋 Pages Overview
 
-| Page | Description |
-|------|-------------|
-| [**Expo & RN Development Notes**](expo-react-native-notes.md) | Project setup, NativeWind, prebuild, Google OAuth, custom fonts, markdown display, file-based routing, navigation, image picker, push notifications, utilities, dev tools |
-| [**EAS CLI Commands**](eas-commands.md) | Complete cheatsheet for EAS Build, Submit, OTA updates, secrets, device management, credentials, and account commands |
-| [**Environment Variables Guide**](expo-env-variables.md) | Three-tier strategy for managing env vars: `.env` for local dev, `eas.json` for build profiles, EAS Secrets for sensitive values |
-| [**Auth Setup**](auth-setup.md) | Full auth architecture: token management, SecureStore, auto-refresh, `fetchWithAuth`, app startup initialization, logout flow |
-| [**Essential UI Libraries**](rn-essential-libraries.md) | Curated list of RN libraries for inputs, navigation, lists, media, maps, animations, modals, storage, networking, auth, charts, and utilities |
+| Page                                                                                         | Description                                                                                                                                                               |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [**Expo & RN Development Notes**](/react-native/index.html#pages/expo-react-native-notes.md) | Project setup, NativeWind, prebuild, Google OAuth, custom fonts, markdown display, file-based routing, navigation, image picker, push notifications, utilities, dev tools |
+| [**EAS CLI Commands**](/react-native/index.html#pages/eas-commands.md)                       | Complete cheatsheet for EAS Build, Submit, OTA updates, secrets, device management, credentials, and account commands                                                     |
+| [**Environment Variables Guide**](/react-native/index.html#pages/expo-env-variables.md)      | Three-tier strategy for managing env vars: `.env` for local dev, `eas.json` for build profiles, EAS Secrets for sensitive values                                          |
+| [**Auth Setup**](/react-native/index.html#pages/auth-setup.md)                               | Full auth architecture: token management, SecureStore, auto-refresh, `fetchWithAuth`, app startup initialization, logout flow                                             |
+| [**Essential UI Libraries**](/react-native/index.html#pages/rn-essential-libraries.md)       | Curated list of RN libraries for inputs, navigation, lists, media, maps, animations, modals, storage, networking, auth, charts, and utilities                             |
 
 ---
 
@@ -73,12 +73,12 @@ This documentation covers several key architectural decisions:
 
 ## 📚 Reference
 
-| Topic | Link |
-|-------|------|
-| Expo Docs | [docs.expo.dev](https://docs.expo.dev/) |
-| Expo Router | [expo.github.io/router](https://expo.github.io/router/) |
-| NativeWind | [nativewind.dev](https://www.nativewind.dev/) |
-| EAS CLI | [docs.expo.dev/eas](https://docs.expo.dev/eas/) |
-| React Native | [reactnative.dev](https://reactnative.dev/) |
-| TanStack Query | [tanstack.com/query](https://tanstack.com/query/latest) |
-| Zustand | [github.com/pmndrs/zustand](https://github.com/pmndrs/zustand) |
+| Topic          | Link                                                                                                                |
+| -------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Expo Docs      | <a href="https://docs.expo.dev/" target="_blank" rel="noopener noreferrer">docs.expo.dev</a>                        |
+| Expo Router    | <a href="https://expo.github.io/router/" target="_blank" rel="noopener noreferrer">expo.github.io/router</a>        |
+| NativeWind     | <a href="https://www.nativewind.dev/" target="_blank" rel="noopener noreferrer">nativewind.dev</a>                  |
+| EAS CLI        | <a href="https://docs.expo.dev/eas/" target="_blank" rel="noopener noreferrer">docs.expo.dev/eas</a>                |
+| React Native   | <a href="https://reactnative.dev/" target="_blank" rel="noopener noreferrer">reactnative.dev</a>                    |
+| TanStack Query | <a href="https://tanstack.com/query/latest" target="_blank" rel="noopener noreferrer">tanstack.com/query</a>        |
+| Zustand        | <a href="https://github.com/pmndrs/zustand" target="_blank" rel="noopener noreferrer">github.com/pmndrs/zustand</a> |

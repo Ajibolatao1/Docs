@@ -4,7 +4,7 @@
 
 1. [Project Setup](#1-project-setup)
 2. [NativeWind (TailwindCSS)](#2-nativewind-tailwindcss)
-3. [Prebuild & Running the App](#3-prebuild--running-the-app)
+3. [Prebuild & Running the App](#3-prebuild-amp-running-the-app)
 4. [Google OAuth](#4-google-oauth)
 5. [Custom Fonts](#5-custom-fonts)
 6. [Markdown Display](#6-markdown-display)
@@ -28,7 +28,7 @@ cd my-app
 npm run reset-project #To reeset the project and remove the boilerplate
 ```
 
-> Full docs: https://docs.expo.dev/
+> Full docs: <a href="https://docs.expo.dev/" target="_blank" rel="noopener noreferrer">https://docs.expo.dev/</a>
 
 ### Recommended Project Structure
 
@@ -50,7 +50,7 @@ my-app/
 
 ---
 
-## 2. Fill the file struture
+### Then
 
 ```bash
 mkdir assets/audio assets/fonts assets/icons
@@ -58,11 +58,11 @@ mkdir auth components constants hooks lib store dummy-data types utils
 touch .env
 ```
 
-## 3. NativeWind (TailwindCSS)
+## 2. NativeWind (TailwindCSS)
 
 NativeWind lets you style React Native components using Tailwind CSS utility classes via the `className` prop.
 
-> Full docs: https://www.nativewind.dev/
+> Full docs: <a href="https://www.nativewind.dev/" target="_blank" rel="noopener noreferrer">https://www.nativewind.dev/</a>
 
 ---
 
@@ -84,7 +84,7 @@ npx expo run:android # You can unplug the usb after this
 npx expo start --dev-client
 ```
 
-> Full docs: https://docs.expo.dev/workflow/continuous-native-generation/
+> Full docs: <a href="https://docs.expo.dev/workflow/continuous-native-generation/" target="_blank" rel="noopener noreferrer">https://docs.expo.dev/workflow/continuous-native-generation/</a>
 
 > **Note:** After every change to `app.json`, `package.json` plugins, or native dependencies, re-run `npx expo prebuild --clean` and rebuild the app.
 
@@ -94,8 +94,8 @@ npx expo start --dev-client
 
 ### Prerequisites
 
-- Follow YouTube Example [YouTube Example](https://www.youtube.com/watch?v=Hbru5P1Uxg0&pp=ygUjR29vZ2xlIHNpZ24gaW4gd2loIGVhY3QgTmF0aXZlIEV4cG8%3D)
-- A project on [Google Cloud Console](https://console.cloud.google.com/auth)
+- Follow YouTube Example [YouTube Example](https://www.youtube.com/watch?v=Hbru5P1Uxg0&pp=ygUjR29vZ2xlIHNpZ24gaW4gd2loIGVhY3QgTmF0aXZlIEV4cG8%3D){target="\_blank"}
+- A project on [Google Cloud Console](https://console.cloud.google.com/auth){target="\_blank"}
 - A debug/release keystore SHA-1 fingerprint (Android)
 - A Bundle ID (iOS)
 
@@ -127,7 +127,7 @@ keytool -keystore path/to/your/production.keystore -list -v
 npx expo install @react-native-google-signin/google-signin
 ```
 
-> Full docs: https://react-native-google-signin.github.io/
+> Full docs: <a href="https://react-native-google-signin.github.io/" target="_blank" rel="noopener noreferrer">https://react-native-google-signin.github.io/</a>
 
 ### Usage
 
@@ -460,7 +460,7 @@ eas build --platform android
 
 #### Step 1 — Create a Firebase Project
 
-1. Go to [Firebase Console](https://console.firebase.google.com)
+1. Go to <a href="https://console.firebase.google.com" target="_blank" rel="noopener noreferrer">Firebase Console</a>
 2. Click **Add Project** and follow the steps
 3. Register your Android app using your package name (e.g. `com.yourname.app`)
 4. Download the `google-services.json` file
@@ -472,7 +472,7 @@ eas build --platform android
 
 #### Step 3 — Upload to Expo Credentials
 
-1. In the [Expo dashboard](https://expo.dev), open your project
+1. In the <a href="https://expo.dev" target="_blank" rel="noopener noreferrer">Expo dashboard</a>, open your project
 2. Go to **Credentials > Android**
 3. Upload the downloaded key to **FCM V1 Service Account Key**
 
