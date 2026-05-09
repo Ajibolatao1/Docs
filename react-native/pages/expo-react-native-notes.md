@@ -94,8 +94,8 @@ npx expo start --dev-client
 
 ### Prerequisites
 
-- Follow YouTube Example [YouTube Example](https://www.youtube.com/watch?v=Hbru5P1Uxg0&pp=ygUjR29vZ2xlIHNpZ24gaW4gd2loIGVhY3QgTmF0aXZlIEV4cG8%3D){target="\_blank"}
-- A project on [Google Cloud Console](https://console.cloud.google.com/auth){target="\_blank"}
+- Follow YouTube Example <a href="https://www.youtube.com/watch?v=Hbru5P1Uxg0&pp=ygUjR29vZ2xlIHNpZ24gaW4gd2loIGVhY3QgTmF0aXZlIEV4cG8%3D" target="_blank" rel="noopener noreferrer">Google Sign-In with React Native Expo</a>
+- A project on <a href="https://console.cloud.google.com/auth" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>
 - A debug/release keystore SHA-1 fingerprint (Android)
 - A Bundle ID (iOS)
 

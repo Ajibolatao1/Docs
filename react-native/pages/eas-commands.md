@@ -53,13 +53,27 @@ eas build:list
 eas build:view
 ```
 
-> **Note:** To output an **APK** build when using the `preview` profile, add the following configuration inside the `preview` object in your `eas.json`:
+## 📋 Build Profiles, Output Format, and Expo Environment Variables
+
+> **Clarification:** In `eas.json`, these two settings do different things:
 >
-> ```json
-> "android": {
->   "buildType": "apk"
-> }
-> ```
+> - `"android": { "buildType": "apk" }` → controls the Android **output format** (APK instead of AAB).
+> - `"environment": "preview"` → tells EAS to load environment variables from the matching **Expo dashboard environment** on [expo.dev](https://expo.dev/).
+
+```json
+{
+  "build": {
+    "preview": {
+      "environment": "preview",
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}
+```
+
+> You can also set `"environment"` for other profiles like `"development"` and `"production"` to read their respective variables from Expo.
 
 ---
 
