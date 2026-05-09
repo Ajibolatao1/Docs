@@ -102,11 +102,8 @@ npx expo start --dev-client
 ### Get the SHA-1 Fingerprint (Android)
 
 ```bash
-# Debug keystore (default path)
-keytool -keystore ./android/app/debug.keystore -list -v
-
-# Production keystore
-keytool -keystore path/to/your/production.keystore -list -v
+# Managed by EAS
+eas credentials
 ```
 
 - **Default password:** `android`
