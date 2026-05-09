@@ -106,10 +106,6 @@ npx expo start --dev-client
 eas credentials
 ```
 
-- **Default password:** `android`
-- **Default key alias:** `androiddebugkey`
-- Copy the `SHA1` value into your Google Cloud Console OAuth client (Android).
-
 ### Google Cloud Console Setup
 
 1. Go to **APIs & Services > Credentials > Create Credentials > OAuth Client ID**
