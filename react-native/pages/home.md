@@ -39,6 +39,7 @@ touch .env
 ### Development Build
 
 ```bash
+adb devices
 npx expo prebuild --clean
 npx expo run:android
 npx expo start --dev-client

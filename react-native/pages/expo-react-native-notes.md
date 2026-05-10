@@ -4,7 +4,7 @@
 
 1. [Project Setup](#1-project-setup)
 2. [NativeWind (TailwindCSS)](#2-nativewind-tailwindcss)
-3. [Prebuild & Running the App](#3-prebuild-amp-running-the-app)
+3. [Running the App](#3-running-the-app)
 4. [Google OAuth](#4-google-oauth)
 5. [Custom Fonts](#5-custom-fonts)
 6. [Markdown Display](#6-markdown-display)
@@ -25,7 +25,7 @@
 ```bash
 npx create-expo-app@latest my-app
 cd my-app
-npm run reset-project #To reeset the project and remove the boilerplate
+npm run reset-project #To reset the project and remove the boilerplate
 ```
 
 > Full docs: <a href="https://docs.expo.dev/" target="_blank" rel="noopener noreferrer">https://docs.expo.dev/</a>
@@ -66,77 +66,94 @@ NativeWind lets you style React Native components using Tailwind CSS utility cla
 
 ---
 
-## 3. Prebuild & Running the App
-
-Prebuild generates the native `android/` and `ios/` folders from your Expo config.
-
+## 3. Running the App
+ 
+### Preferred Workflow: EAS Development Build
+ 
+An EAS development build is a compiled APK that includes Expo Dev Client. You install it once on your device, then connect it to your local Metro bundler for live code changes — no USB required after the initial install.
+ 
 ```bash
-# Ensure that the device is connected
-adb devices
-
-# Clean prebuild (recommended when changing native config)
-npx expo prebuild --clean
-
-# Install app
-npx expo run:android # You can unplug the usb after this
-
-# Start the dev server only (Every time after installing app - step 3)
+# Step 1 — Build and install the development APK (once, or when native deps change)
+eas build --profile development --platform android
+ 
+# Step 2 — Start Metro bundler (every time you develop)
 npx expo start --dev-client
 ```
-
-> Full docs: <a href="https://docs.expo.dev/workflow/continuous-native-generation/" target="_blank" rel="noopener noreferrer">https://docs.expo.dev/workflow/continuous-native-generation/</a>
-
-> **Note:** After every change to `app.json`, `package.json` plugins, or native dependencies, re-run `npx expo prebuild --clean` and rebuild the app.
-
+ 
+After installing the APK, open it on your device. It will show a screen to scan the QR code from `expo start` or enter your Metro server URL manually. From that point, code changes reflect instantly via fast refresh.
+ 
+> **When to rebuild the APK:** Only when you add a new native module/package, change `app.json` native config (plugins, permissions), or change native Android code. Pure JS/TypeScript changes never require a rebuild.
+ 
+> Full docs: <a href="https://docs.expo.dev/develop/development-builds/introduction/" target="_blank" rel="noopener noreferrer">https://docs.expo.dev/develop/development-builds/introduction/</a>
+ 
 ---
-
-## 4. Google OAuth
-
-### Prerequisites
-
-- Follow YouTube Example <a href="https://www.youtube.com/watch?v=Hbru5P1Uxg0&pp=ygUjR29vZ2xlIHNpZ24gaW4gd2loIGVhY3QgTmF0aXZlIEV4cG8%3D" target="_blank" rel="noopener noreferrer">Google Sign-In with React Native Expo</a>
-- A project on <a href="https://console.cloud.google.com/auth" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>
-- A debug/release keystore SHA-1 fingerprint (Android)
-- A Bundle ID (iOS)
-
-### Get the SHA-1 Fingerprint (Android)
-
+ 
+### Preview Build
+ 
+Use a preview build to test the final app experience (bundle baked in, no Dev Client, no Metro connection).
+ 
 ```bash
-# Managed by EAS
-eas credentials
+eas build --profile preview --platform android
 ```
-
+ 
+|              | Development Build        | Preview Build        |
+| ------------ | ------------------------ | -------------------- |
+| JS bundler   | Connects to local Metro  | Baked into APK       |
+| Dev menu     | ✅ Available             | ❌ Not available     |
+| Fast refresh | ✅ Yes                   | ❌ No                |
+| Use case     | Active development       | Testing final app    |
+| Keystore     | EAS development keystore | EAS preview keystore |
+ 
+---
+ 
+## 4. Google OAuth
+ 
+### Prerequisites
+ 
+- A project on <a href="https://console.cloud.google.com/auth" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>
+- A SHA-1 fingerprint per build profile (Android)
+- A Bundle ID (iOS)
+### Keystores & SHA-1 Fingerprints (Android)
+ 
+EAS manages a separate keystore for each build profile (development, preview, production). Each keystore has a unique SHA-1 fingerprint that must be registered in Google Cloud Console for Google Sign-In to work.
+ 
+```bash
+# Get the SHA-1 for a specific profile
+eas credentials  # then select platform → profile → Keystore
+```
+ 
+Since all EAS build profiles (development, preview, production) share the same keystore, one Android OAuth client in Google Cloud Console is sufficient — just register the single SHA-1 from eas credentials.
+ 
+> **Always use `eas credentials` to get SHA-1 fingerprints** — never use a local keystore file with `keytool`, as EAS builds use keystores stored on Expo's servers, not your machine.
+ 
 ### Google Cloud Console Setup
-
+ 
 1. Go to **APIs & Services > Credentials > Create Credentials > OAuth Client ID**
-2. Create two clients:
-   - **Android** — enter your package name (e.g. `com.yourname.app`) and SHA-1
-   - **Web** — used as the `webClientId` in your app
-3. For iOS, create an **iOS** client and enter your Bundle ID
-
+2. Create one **Android** client per build profile — enter your package name (e.g. `com.yourname.app`) and that profile's SHA-1
+3. Create one **Web** client — used as the `webClientId` in your app
+4. For iOS, create an **iOS** client and enter your Bundle ID
 ### Install the Library
-
+ 
 ```bash
 npx expo install @react-native-google-signin/google-signin
 ```
-
+ 
 > Full docs: <a href="https://react-native-google-signin.github.io/" target="_blank" rel="noopener noreferrer">https://react-native-google-signin.github.io/</a>
-
+ 
 ### Usage
-
+ 
 ```tsx
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import { useEffect } from "react";
-
+ 
 // Configure once (e.g. in _layout.tsx or App.tsx)
 GoogleSignin.configure({
   webClientId: "YOUR_WEB_CLIENT_ID.apps.googleusercontent.com",
 });
-
+ 
 export default function SignInScreen() {
   const signIn = async () => {
     try {
@@ -153,11 +170,11 @@ export default function SignInScreen() {
       }
     }
   };
-
+ 
   return <GoogleSigninButton onPress={signIn} />;
 }
 ```
-
+ 
 ---
 
 ## 5. Custom Fonts
